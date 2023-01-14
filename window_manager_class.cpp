@@ -1,17 +1,39 @@
 #include "window_manager_class.h"
+#include<iostream>
+#include <utility>
+#include<windowsx.h>
 
-LRESULT WINAPI default_window_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	auto r = yang::WindowManager::GetWindowManger();
-	return ::DefWindowProc(hWnd, msg, wParam, lParam);
-}
 
 namespace yang
 {
 
+	void empty_mouse_function(WPARAM button_state, uint x, uint y)
+	{
+		std::cout << "down" << std::endl;
+	}
+
+	LRESULT WINAPI default_window_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		auto& window_manager = yang::WindowManager::GetWindowManger();
+		switch (msg)
+		{
+		case WM_RBUTTONDOWN:
+			window_manager.GetMouseRightDownFunction()(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			return 0;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+		default: 
+			return ::DefWindowProc(hWnd, msg, wParam, lParam);
+		}
+
+		
+	}
+
 	Window::Window(const HWND window_handler)
 	{
 		window_handler_ = window_handler;
+		
 	}
 
 	// ReSharper disable once CppMemberFunctionMayBeConst
@@ -25,8 +47,14 @@ namespace yang
 		window_class_ = { sizeof(WNDCLASSEX), CS_CLASSDC, default_window_proc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"Example", nullptr };
 		window_handle_ = nullptr;
 		window_ = nullptr;
+		mouse_right_down_function_ = empty_mouse_function;
 
 	}
+
+	WindowManager::WindowManager(const WindowManager&) = default;
+
+	WindowManager& WindowManager::operator=(const WindowManager&) = default;
+	
 
 	WindowManager& WindowManager::GetWindowManger()
 	{
@@ -80,5 +108,15 @@ namespace yang
 		ShowWindow(window_->GetWindowHandler(), SW_SHOWDEFAULT);
 		UpdateWindow(window_->GetWindowHandler());
 
+	}
+
+	mouse_function WindowManager::GetMouseRightDownFunction()
+	{
+		return mouse_right_down_function_;
+	}
+
+	void WindowManager::SetMouseRightDownFunction(mouse_function function)
+	{
+		mouse_right_down_function_ = std::move(function);
 	}
 }

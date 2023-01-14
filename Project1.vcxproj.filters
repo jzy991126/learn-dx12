@@ -30,6 +30,9 @@
     <ClCompile Include="window_manager_class.cpp">
       <Filter>源文件\tools</Filter>
     </ClCompile>
+    <ClCompile Include="game_timer_class.cpp">
+      <Filter>源文件\tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dx12.h">
@@ -39,6 +42,9 @@
       <Filter>头文件\tools</Filter>
     </ClInclude>
     <ClInclude Include="common.h">
+      <Filter>头文件\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="game_timer_class.h">
       <Filter>头文件\tools</Filter>
     </ClInclude>
   </ItemGroup>
