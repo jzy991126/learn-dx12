@@ -15,7 +15,7 @@ namespace yang
 		static GameTimer& GetInstance();
 		void Tick();
 		void Reset();
-		double GetDeltaTime() const;
+		double delta_time() const;
 
 	};
 

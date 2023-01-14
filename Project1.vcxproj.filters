@@ -1,51 +1,63 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="头文件\dependency">
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="include\dependency">
       <UniqueIdentifier>{7155de14-f223-4962-8480-eb09dac55a0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\tools">
+    <Filter Include="include\tools">
       <UniqueIdentifier>{56c69bcd-d374-4d8b-b869-660e1ea00b8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\tools">
+    <Filter Include="include\core">
+      <UniqueIdentifier>{6dcd5c56-f7b5-41b9-b074-feeec7e7984b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\tools">
       <UniqueIdentifier>{3e59bfe0-2a80-45ac-a145-46f51ad1bb9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{5a448d4e-53e2-4117-85bd-f97be165de0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="window_manager_class.cpp">
-      <Filter>源文件\tools</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="game_timer_class.cpp">
-      <Filter>源文件\tools</Filter>
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="window_manager_class.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="dx_exception_class.cpp">
+      <Filter>src\tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dx12.h">
-      <Filter>头文件\dependency</Filter>
-    </ClInclude>
-    <ClInclude Include="window_manager_class.h">
-      <Filter>头文件\tools</Filter>
+      <Filter>include\dependency</Filter>
     </ClInclude>
     <ClInclude Include="common.h">
-      <Filter>头文件\tools</Filter>
+      <Filter>include\tools</Filter>
     </ClInclude>
     <ClInclude Include="game_timer_class.h">
-      <Filter>头文件\tools</Filter>
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="window_manager_class.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
+    <ClInclude Include="dx_exception_class.h">
+      <Filter>include\tools</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

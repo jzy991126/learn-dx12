@@ -26,7 +26,7 @@ namespace yang
 
 	}
 
-	double GameTimer::GetDeltaTime() const
+	double GameTimer::delta_time() const
 	{
 		return delta_time_.count();
 	}

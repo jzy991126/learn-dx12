@@ -13,7 +13,7 @@ namespace yang
 		HWND window_handler_;
 	public:
 		explicit Window(HWND window_handler);
-		[[nodiscard]] HWND GetWindowHandler();
+		[[nodiscard]] HWND window_handler();
 	};
 
 
@@ -30,20 +30,20 @@ namespace yang
 	private:
 		Window* window_;
 
-		mouse_function mouse_right_down_function_;
+		mouse_function mouse_right_down_func_;
 
 		WindowManager();
 		WindowManager(const WindowManager&);
 		WindowManager& operator=(const WindowManager&);
 	public:
-		static WindowManager& GetWindowManger();
+		static WindowManager& GetInstance();
 		Window* CreateYWindow(const char* name,uint width,uint height);
 		void ProcessMessage();
 		[[nodiscard]] bool ShouldClose() const;
 		void Terminate();
 		void Show() const;
-		mouse_function GetMouseRightDownFunction();
-		void SetMouseRightDownFunction(mouse_function function);
+		mouse_function mouse_right_down_func();
+		void set_mouse_right_down_func(mouse_function function);
 
 	};
 }

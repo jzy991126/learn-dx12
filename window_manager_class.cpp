@@ -14,11 +14,11 @@ namespace yang
 
 	LRESULT WINAPI default_window_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		auto& window_manager = yang::WindowManager::GetWindowManger();
+		auto& window_manager = yang::WindowManager::GetInstance();
 		switch (msg)
 		{
 		case WM_RBUTTONDOWN:
-			window_manager.GetMouseRightDownFunction()(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			window_manager.mouse_right_down_func()(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			return 0;
 		case WM_DESTROY:
 			PostQuitMessage(0);
@@ -37,7 +37,7 @@ namespace yang
 	}
 
 	// ReSharper disable once CppMemberFunctionMayBeConst
-	HWND Window::GetWindowHandler()
+	HWND Window::window_handler()
 	{
 		return window_handler_;
 	}
@@ -47,7 +47,7 @@ namespace yang
 		window_class_ = { sizeof(WNDCLASSEX), CS_CLASSDC, default_window_proc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, L"Example", nullptr };
 		window_handle_ = nullptr;
 		window_ = nullptr;
-		mouse_right_down_function_ = empty_mouse_function;
+		mouse_right_down_func_ = empty_mouse_function;
 
 	}
 
@@ -56,11 +56,11 @@ namespace yang
 	WindowManager& WindowManager::operator=(const WindowManager&) = default;
 	
 
-	WindowManager& WindowManager::GetWindowManger()
+	WindowManager& WindowManager::GetInstance()
 	{
 		static WindowManager window_manager;
 		return window_manager;
-
+		
 	}
 
 	Window* WindowManager::CreateYWindow(const char* name, uint width, uint height)
@@ -99,24 +99,24 @@ namespace yang
 	// ReSharper disable once CppMemberFunctionMayBeConst
 	void WindowManager::Terminate()
 	{
-		DestroyWindow(window_->GetWindowHandler());
+		DestroyWindow(window_->window_handler());
 		UnregisterClass(window_class_.lpszClassName, window_class_.hInstance);
 	}
 
 	void WindowManager::Show() const
 	{
-		ShowWindow(window_->GetWindowHandler(), SW_SHOWDEFAULT);
-		UpdateWindow(window_->GetWindowHandler());
+		ShowWindow(window_->window_handler(), SW_SHOWDEFAULT);
+		UpdateWindow(window_->window_handler());
 
 	}
 
-	mouse_function WindowManager::GetMouseRightDownFunction()
+	mouse_function WindowManager::mouse_right_down_func()
 	{
-		return mouse_right_down_function_;
+		return mouse_right_down_func_;
 	}
 
-	void WindowManager::SetMouseRightDownFunction(mouse_function function)
+	void WindowManager::set_mouse_right_down_func(mouse_function function)
 	{
-		mouse_right_down_function_ = std::move(function);
+		mouse_right_down_func_ = std::move(function);
 	}
 }
