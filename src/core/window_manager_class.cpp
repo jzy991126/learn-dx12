@@ -1,4 +1,4 @@
-#include "window_manager_class.h"
+#include "core/window_manager_class.h"
 #include<iostream>
 #include <utility>
 #include<windowsx.h>
@@ -26,14 +26,12 @@ namespace yang
 		default: 
 			return ::DefWindowProc(hWnd, msg, wParam, lParam);
 		}
-
-		
 	}
 
-	Window::Window(const HWND window_handler)
+
+
+	Window::Window(const HWND window_handler, const uint width, const uint height):window_handler_(window_handler),width_(width),height_(height)
 	{
-		window_handler_ = window_handler;
-		
 	}
 
 	// ReSharper disable once CppMemberFunctionMayBeConst
@@ -63,15 +61,15 @@ namespace yang
 		
 	}
 
-	Window* WindowManager::CreateYWindow(const char* name, uint width, uint height)
+	Window* WindowManager::CreateYWindow(const char* name, const uint width, const uint height)
 	{
 		const auto w_name = ConvertCharArrayToLPCWSTR(name);
 		// ReSharper disable once CppLocalVariableMayBeConst
 		WNDCLASSEX window_class = { sizeof(WNDCLASSEX), CS_CLASSDC, default_window_proc, 0L, 0L, GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr, w_name, nullptr};
 		RegisterClassEx(&window_class);
 		// ReSharper disable once CppLocalVariableMayBeConst
-		HWND window_handler = CreateWindow(window_class.lpszClassName, w_name, WS_OVERLAPPEDWINDOW, 100, 100, 800, 600, NULL, NULL, window_class.hInstance, NULL);
-		window_ = new Window(window_handler);
+		HWND window_handler = CreateWindow(window_class.lpszClassName, w_name, WS_OVERLAPPEDWINDOW, 100, 100, width, height, NULL, NULL, window_class.hInstance, NULL);
+		window_ = new Window(window_handler,width,height);
 		return window_;
 	}
 

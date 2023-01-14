@@ -18,6 +18,21 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\core\common.h" />
+    <ClInclude Include="include\core\d3d_manager_class.h" />
+    <ClInclude Include="include\core\dx_exception_class.h" />
+    <ClInclude Include="include\core\game_timer_class.h" />
+    <ClInclude Include="include\core\window_manager_class.h" />
+    <ClInclude Include="include\dependency\d3dx12.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\d3d_manager_class.cpp" />
+    <ClCompile Include="src\core\dx_exception_class.cpp" />
+    <ClCompile Include="src\core\game_timer_class.cpp" />
+    <ClCompile Include="src\core\window_manager_class.cpp" />
+    <ClCompile Include="src\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -70,6 +85,16 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ExecutablePath>$(SolutionDir);$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ExecutablePath>$(SolutionDir);$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <SourcePath>$(SolutionDir)src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -129,19 +154,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="dx_exception_class.cpp" />
-    <ClCompile Include="game_timer_class.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="window_manager_class.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="d3dx12.h" />
-    <ClInclude Include="dx_exception_class.h" />
-    <ClInclude Include="game_timer_class.h" />
-    <ClInclude Include="window_manager_class.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

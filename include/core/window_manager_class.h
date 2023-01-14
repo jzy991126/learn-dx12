@@ -10,10 +10,16 @@ namespace yang
 	class Window
 	{
 	private:
-		HWND window_handler_;
+		HWND window_handler_{};
+		uint width_{}, height_{};
 	public:
-		explicit Window(HWND window_handler);
+		explicit Window(HWND window_handler,uint width,uint height);
 		[[nodiscard]] HWND window_handler();
+		[[nodiscard]] uint width() const{ return width_; };
+		unsigned height() const { return height_; }
+		void set_height(const uint height) { height_ = height; }
+		void set_width(const uint width) { width_ = width; }
+		
 	};
 
 
