@@ -1,0 +1,12 @@
+project(test)
+cmake_minimum_required(VERSION 3.24)
+
+
+find_package(spdlog CONFIG REQUIRED)
+
+set(CMAKE_CXX_STANDARD 20)
+include_directories(include)
+file(GLOB SRC_FILES src/main.cpp src/core/*.cpp )
+
+add_executable(${PROJECT_NAME} ${SRC_FILES})
+target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
