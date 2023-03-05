@@ -27,7 +27,6 @@ int main()
 		game_timer.Tick();
 		window_manager.ProcessMessage();
 		d3d_manager.Draw();
-		spdlog::info("{}", 1./game_timer.delta_time());
 	}
 	window_manager.Terminate();
 	return 0;

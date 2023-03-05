@@ -11,7 +11,7 @@ namespace yang
 		XMFLOAT3 Pos;
 		XMFLOAT4 Color;
 	};
-	//ÊµÀý»¯¶¥µã½á¹¹Ìå²¢Ìî³ä
+	//å®žä¾‹åŒ–é¡¶ç‚¹ç»“æž„ä½“å¹¶å¡«å……
 	
 
 	class D3dManager
