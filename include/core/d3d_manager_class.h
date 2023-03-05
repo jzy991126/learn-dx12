@@ -1,14 +1,19 @@
 #pragma once
-#include <Windows.h>
+
 #include "core/window_manager_class.h"
-#include <wrl.h>
-#include "dependency/d3dx12.h"
-#include <dxgi.h>
-#include <dxgi1_6.h>
-#include <d3d12.h>
-using namespace Microsoft::WRL;
+#include "common.h"
+#include <array>
 namespace yang
 {
+
+	struct Vertex
+	{
+		XMFLOAT3 Pos;
+		XMFLOAT4 Color;
+	};
+	//实例化顶点结构体并填充
+	
+
 	class D3dManager
 	{
 		static constexpr uint kFrameCount = 2;
@@ -25,6 +30,8 @@ namespace yang
 		ComPtr<ID3D12GraphicsCommandList> command_list_;
 		ComPtr<ID3D12CommandQueue> command_queue_;
 		ComPtr<ID3D12Resource> depth_stencil_buffer_;
+		ComPtr<ID3D12Resource> vertex_buffer_;
+		D3D12_VERTEX_BUFFER_VIEW vertex_buffer_view_;
 
 
 		D3D12_VIEWPORT view_port_{};
@@ -49,10 +56,24 @@ namespace yang
 		void CreateViewPortAndScissorRect();
 		void FlushCmdQueue();
 		void Init();
+		void LoadAssets();
+		ComPtr<ID3D12Resource> CreateDefaultBuffer(UINT64 byte_size, const void* init_data, ComPtr<ID3D12Resource>& upload_buffer);
 
 	public:
 		explicit D3dManager(Window* window);
 		void Draw();
+	private:
+		std::array<Vertex, 8> vertices =
+		{
+			Vertex({ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::White) }),
+			Vertex({ XMFLOAT3(-1.0f, +1.0f, -1.0f), XMFLOAT4(Colors::Black) }),
+			Vertex({ XMFLOAT3(+1.0f, +1.0f, -1.0f), XMFLOAT4(Colors::Red) }),
+			Vertex({ XMFLOAT3(+1.0f, -1.0f, -1.0f), XMFLOAT4(Colors::Green) }),
+			Vertex({ XMFLOAT3(-1.0f, -1.0f, +1.0f), XMFLOAT4(Colors::Blue) }),
+			Vertex({ XMFLOAT3(-1.0f, +1.0f, +1.0f), XMFLOAT4(Colors::Yellow) }),
+			Vertex({ XMFLOAT3(+1.0f, +1.0f, +1.0f), XMFLOAT4(Colors::Cyan) }),
+			Vertex({ XMFLOAT3(+1.0f, -1.0f, +1.0f), XMFLOAT4(Colors::Magenta) })
+		};
 	};
 
 }

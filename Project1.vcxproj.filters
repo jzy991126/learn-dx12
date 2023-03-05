@@ -40,6 +40,9 @@
     <ClInclude Include="include\core\window_manager_class.h">
       <Filter>include\core</Filter>
     </ClInclude>
+    <ClInclude Include="include\core\upload_buffer_class.h">
+      <Filter>include\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -55,6 +58,9 @@
       <Filter>src\core</Filter>
     </ClCompile>
     <ClCompile Include="src\core\d3d_manager_class.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\upload_buffer_class.cpp">
       <Filter>src\core</Filter>
     </ClCompile>
   </ItemGroup>

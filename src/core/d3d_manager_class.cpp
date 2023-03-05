@@ -204,6 +204,52 @@ namespace yang
 		CreateViewPortAndScissorRect();
 	}
 
+	void D3dManager::LoadAssets()
+	{
+		ComPtr<ID3D12Resource> vertexBufferUploader = nullptr;
+		vertex_buffer_ = CreateDefaultBuffer(sizeof(vertices), vertices.data(), vertexBufferUploader);
+	}
+
+	ComPtr<ID3D12Resource> D3dManager::CreateDefaultBuffer(UINT64 byte_size, const void* init_data,
+	                                                       ComPtr<ID3D12Resource>& upload_buffer)
+	{
+		THROW_IF_FAILED(d3d12_device_->CreateCommittedResource(get_rvalue_ptr(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD)), //创建上传堆类型的堆
+			D3D12_HEAP_FLAG_NONE,
+			 get_rvalue_ptr(CD3DX12_RESOURCE_DESC::Buffer(byte_size)),//变体的构造函数，传入byteSize，其他均为默认值，简化书写
+			D3D12_RESOURCE_STATE_GENERIC_READ,	//上传堆里的资源需要复制给默认堆，所以是可读状态
+			nullptr,	//不是深度模板资源，不用指定优化值
+			IID_PPV_ARGS(&upload_buffer)));
+		ComPtr<ID3D12Resource> defaultBuffer;
+		THROW_IF_FAILED(d3d12_device_->CreateCommittedResource(get_rvalue_ptr(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT)),//创建默认堆类型的堆
+			D3D12_HEAP_FLAG_NONE,
+			get_rvalue_ptr(CD3DX12_RESOURCE_DESC::Buffer(byte_size)),
+			D3D12_RESOURCE_STATE_COMMON,//默认堆为最终存储数据的地方，所以暂时初始化为普通状态
+			nullptr,
+			IID_PPV_ARGS(&defaultBuffer)));
+
+		//将资源从COMMON状态转换到COPY_DEST状态（默认堆此时作为接收数据的目标）
+		command_list_->ResourceBarrier(1,
+			get_rvalue_ptr(CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(),
+				D3D12_RESOURCE_STATE_COMMON,
+				D3D12_RESOURCE_STATE_COPY_DEST)));
+
+		//将数据从CPU内存拷贝到GPU缓存
+		D3D12_SUBRESOURCE_DATA subResourceData;
+		subResourceData.pData = init_data;
+		subResourceData.RowPitch = byte_size;
+		subResourceData.SlicePitch = subResourceData.RowPitch;
+		//核心函数UpdateSubresources，将数据从CPU内存拷贝至上传堆，再从上传堆拷贝至默认堆。1是最大的子资源的下标（模板中定义，意为有2个子资源）
+		UpdateSubresources<1>(command_list_.Get(), defaultBuffer.Get(), upload_buffer.Get(), 0, 0, 1, &subResourceData);
+
+		//再次将资源从COPY_DEST状态转换到GENERIC_READ状态(现在只提供给着色器访问)
+		command_list_->ResourceBarrier(1,
+			get_rvalue_ptr(CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(),
+				D3D12_RESOURCE_STATE_COPY_DEST,
+				D3D12_RESOURCE_STATE_GENERIC_READ)));
+
+		return defaultBuffer;
+	}
+
 	D3dManager::D3dManager(Window* window): window_(window)
 	{
 		Init();
@@ -214,10 +260,9 @@ namespace yang
 		THROW_IF_FAILED(command_allocator_->Reset()); //重复使用记录命令的相关内存
 		THROW_IF_FAILED(command_list_->Reset(command_allocator_.Get(), nullptr)); //复用命令列表及其内存
 		UINT& ref_mCurrentBackBuffer = current_back_buffer_;
-		auto rr = CD3DX12_RESOURCE_BARRIER::Transition(swap_chain_buffer_[ref_mCurrentBackBuffer].Get(), //转换资源为后台缓冲区资源
-		                                               D3D12_RESOURCE_STATE_PRESENT,
-		                                               D3D12_RESOURCE_STATE_RENDER_TARGET);
-		command_list_->ResourceBarrier(1, &rr); //从呈现到渲染目标转换
+		command_list_->ResourceBarrier(1, get_rvalue_ptr(CD3DX12_RESOURCE_BARRIER::Transition(swap_chain_buffer_[ref_mCurrentBackBuffer].Get(), //转换资源为后台缓冲区资源
+			D3D12_RESOURCE_STATE_PRESENT,
+			D3D12_RESOURCE_STATE_RENDER_TARGET))); //从呈现到渲染目标转换
 		command_list_->RSSetViewports(1, &view_port_);
 		command_list_->RSSetScissorRects(1, &scissor_rect_);
 		const D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(

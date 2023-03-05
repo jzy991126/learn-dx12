@@ -23,6 +23,7 @@
     <ClInclude Include="include\core\d3d_manager_class.h" />
     <ClInclude Include="include\core\dx_exception_class.h" />
     <ClInclude Include="include\core\game_timer_class.h" />
+    <ClInclude Include="include\core\upload_buffer_class.h" />
     <ClInclude Include="include\core\window_manager_class.h" />
     <ClInclude Include="include\dependency\d3dx12.h" />
   </ItemGroup>
@@ -30,6 +31,7 @@
     <ClCompile Include="src\core\d3d_manager_class.cpp" />
     <ClCompile Include="src\core\dx_exception_class.cpp" />
     <ClCompile Include="src\core\game_timer_class.cpp" />
+    <ClCompile Include="src\core\upload_buffer_class.cpp" />
     <ClCompile Include="src\core\window_manager_class.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -105,7 +107,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,7 +137,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

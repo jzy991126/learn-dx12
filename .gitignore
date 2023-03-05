@@ -1,2 +1,5 @@
 .vs/
 x64/
+cmake-build-debug
+.VSCodeCounter
+.idea

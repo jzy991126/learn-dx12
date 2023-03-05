@@ -3,6 +3,7 @@
 #include "core/d3d_manager_class.h"
 #include <iostream>
 #include <functional>
+#include <spdlog/spdlog.h>
 
 
 void down(WPARAM a, uint x, uint y)
@@ -20,12 +21,13 @@ int main()
 
 	window_manager.Show();
 	game_timer.Reset();
-	while (!yang::WindowManager::GetInstance().ShouldClose())
+	game_timer.Start();
+	while (!window_manager.ShouldClose())
 	{
 		game_timer.Tick();
 		window_manager.ProcessMessage();
-
 		d3d_manager.Draw();
+		spdlog::info("{}", 1./game_timer.delta_time());
 	}
 	window_manager.Terminate();
 	return 0;
