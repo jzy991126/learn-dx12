@@ -3,7 +3,6 @@
 #include "core/d3d_manager_class.h"
 #include <iostream>
 #include <functional>
-#include <spdlog/spdlog.h>
 
 
 void down(WPARAM a, uint x, uint y)
@@ -17,7 +16,7 @@ int main()
 	window_manager.set_mouse_right_down_func(down);
 	const auto window = window_manager.CreateYWindow("test", 800, 800);
 	auto d3d_manager = yang::D3dManager(window);
-	auto game_timer = yang::GameTimer::GetInstance();
+	auto& game_timer = yang::GameTimer::GetInstance();
 
 	window_manager.Show();
 	game_timer.Reset();
@@ -26,6 +25,7 @@ int main()
 	{
 		game_timer.Tick();
 		window_manager.ProcessMessage();
+        d3d_manager.Update();
 		d3d_manager.Draw();
 	}
 	window_manager.Terminate();
